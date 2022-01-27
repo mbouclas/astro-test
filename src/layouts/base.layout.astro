@@ -1,0 +1,30 @@
+---
+const {title, description} = Astro.props;
+
+---
+
+<html>
+<head>
+    <title>Example Layout: {title}</title>
+    <meta charset="UTF-8">
+    <meta name=description content="{description || 'Hello world'}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/style/global.css">
+    <link rel="stylesheet" href="/style/home.css">
+</head>
+<body>
+<!-- Adds a navigation bar to every page. -->
+<nav>
+    <a href="/">Home</a>
+    <a href="/pages/">Pages</a>
+    <a href="/about">About</a>
+    <a href="#">Contact</a>
+</nav>
+<!-- slot: your page content will be injected here. -->
+<slot />
+
+<script src={Astro.resolve('../index.ts')} type="module" hoist></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/base.layout.astro';
+
+
+export async function getStaticPaths({ paginate }) {
+  // Load your data with fetch(), Astro.fetchContent(), etc.
+  const response = await fetch(`${import.meta.env.PUBLIC_API_URL}pages`, {
+    headers: {
+        Authorization: `Bearer ${import.meta.env.PUBLIC_STRAPI_KEY}`
+    }
+});
+const result = await response.json();
+// Remember: Astro component scripts log to the CLI
+const items = result.data;
+
+  // Return a paginated collection of paths for all posts
+  return paginate(items, { pageSize: 2 });
+}
+// If set up correctly, The page prop now has everything that
+// you need to render a single page (see next section).
+const { page } = Astro.props;
+
+---
+
+<BaseLayout title="Pages" description="Welcome to pages">
+  {page.data.map((item) => (
+      <li><a href="/page/${item.attributes.slug}">{item.attributes.title}</a></li>
+))}
+
+      <nav class="nav">
+        <a class="prev" href={page.url.prev || '#'}>Prev</a>
+        <a class="next" href={page.url.next || '#'}>Next</a>
+      </nav>
+
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/base.layout.astro';
+
+export async function getStaticPaths() {
+
+
+  const response = await fetch(`${import.meta.env.PUBLIC_API_URL}pages`, {
+    headers: {
+        Authorization: `Bearer ${import.meta.env.PUBLIC_STRAPI_KEY}`
+    }
+});
+
+const result = await response.json();
+
+const items = result.data;
+
+
+    return items.map(item => {
+        return {params: {slug: item.attributes.slug}, props: item}
+    })
+}
+
+     
+      const {slug} = Astro.request.params;
+      const item = Astro.props;
+
+
+---
+
+    <BaseLayout title="Pages" description="Welcome to pages">
+    <h1>{item.attributes.title}</h1>
+    </BaseLayout>
